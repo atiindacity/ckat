@@ -1,0 +1,388 @@
+<?php include "includes/adminheader.php" ;?>
+
+<body>
+
+    <!-- Navigation -->
+    
+    
+<?php include "includes/adminnav.php" ;?>
+   
+   
+   
+   
+   
+    <!-- Page Content -->
+
+<?php include "includes/about.php" ;?>        
+        
+        
+        
+     
+
+        <!-- Pagination -->
+   
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+<?php include "includes/adminfooter.php" ;?>       ======================================================
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+
+if (isset($_POST['submit'])){
+
+        $title = $_POST['title'];
+        $image =  $_FILES["image"]["name"];
+        $uploadOk = 1;
+        $imageFileType = pathinfo($image,PATHINFO_EXTENSION);
+        $image_temp = $_FILES['image']['tmp_name'];
+    if($image_temp !== false) {
+        $uploadOk = 1;
+    } else {
+        echo "File is not an image.";
+        $uploadOk = 0;
+    }
+ 
+    // Allow certain file format
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif"  && $imageFileType != "JPG" && $imageFileType != "PNG" && $imageFileType != "JPEG" && $imageFileType != "GIF" ) {
+        echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+    // check if $uploadOk = 0 by an error
+    if ($uploadOk == 0) {
+        echo " Sorry, your file was not uploaded.";
+        // if everything is ok, try to upload file
+    } else {
+        if(move_uploaded_file($_FILES["image"]["tmp_name"], "image/$image")){
+            echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
+    
+        $content = $_POST['content'];
+        $price = $_POST['price'];
+        $phone = $_POST['phone'];
+         $username = $_POST['username'];
+//        $tags = $_POST['tags'];
+//        $userId = $_POST['user_id'];
+        $current_date = date("Y-m-d");
+    
+
+//    
+// 
+//         
+//             move_uploaded_file( $image_temp, "image/$image" );
+       
+
+    
+      
+  
+
+       
+    
+ $query = "INSERT INTO posts ( post_title, post_content, post_image, post_price, post_phone, user_name, post_date) ";
+$query .= "VALUES ( '{$title}', '{$content}', '{$image}', '{$price}', '{$phone}', '{$username}', '{$current_date}' ) ";
+        
+   $userPost = mysqli_query($connected, $query);
+    if(!$userPost){
+        die ("QUERY FAILED" . mysqli_error($connected));
+}
+
+}
+
+?> 
+ 
+ 
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2">
+     
+    </div>
+    <div class="col-sm-8">
+     
+     
+    <form class="form" role="form" method="post" action="#" enctype="multipart/form-data" >
+      
+         
+         
+       
+          <div class="form-group">
+            <h4><span class="label label-primary"></span> Your username: </h4>
+        
+        <input type="username" class="form-control" name="username" value=" <?php   if ( $_SESSION['usermo']){
+    
+    $username = $_SESSION['usermo'];  echo $username; } ?>">
+        </div>
+         
+      
+         
+         
+       
+ 
+      
+      
+      
+      
+      
+       
+       <div class="form-group">
+        <h4><span class="label label-primary">Title</span></h4>
+        <input type="title" class="form-control" name="title" placeholder="Title of your item" required>
+        </div>
+       
+        <div class="form-group">
+        <h4><span class="label label-primary">Image</span></h4>
+        <input type="file"  name="image" id="image" >
+        <div id="filediv"><input name="file[]" type="file" id="file"/></div>
+        
+        </div>
+        
+        
+        
+        <div class="form-group">
+        <h4><span class="label label-primary">Content Discription</span></h4>
+<!--     CONTENT BEEN REPLACE   <input type="content" class="form-control" name="content" placeholder="content" >-->
+          <textarea  type="text" class="form-control" rows="5" name="content" placeholder="Content"></textarea>
+        </div>
+
+        
+        
+        
+        
+        
+        <div class="form-group">
+            <h4><span class="label label-primary">Price</span></h4>
+        
+        <input type="price" class="form-control" name="price" placeholder="Input your Price">
+        </div>
+        <div class="form-group">
+        <h4><span class="label label-primary">Phone Number</span></h4>
+        <input type="phone" class="form-control" name="phone" placeholder="+63 123 456 7890" >
+        </div>
+       
+       
+
+  
+       
+           
+            
+            <div class="form-group">
+        <button type="submit" name="submit" class="btn btn-primary btn-block">Submit Post</button>
+        </div>
+    </form> 
+    </div>
+    <div class="col-sm-2">
+     
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================
+
+
+
+
+<?php
+
+if (isset($_POST['submit'])){
+
+        $title = $_POST['title'];
+        $image =  $_FILES["image"]["name"];
+        $uploadOk = 5;
+       
+        $image_temp = count($_FILES['image']['tmp_name']);
+         $imageFileType = pathinfo($image_temp,PATHINFO_EXTENSION);
+    for($i = 0; $i<$image_temp; $i++){
+        if(!is_uploaded_file($_FILES['image']['tmp_name'][$i])){
+            echo "No files uploaded!";
+        } else {
+            if(@ copy($_FILES['image']['tmp_name'][$i], "image/". $_FILES['image']['name'][$i])){
+    
+            $image = $_FILES['image']['name'][$i]; 
+    // Allow certain file format
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif"  ) {
+        echo "Sorry, only JPG, JPEG, PNG, & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+ 
+    
+        $content = $_POST['content'];
+        $price = $_POST['price'];
+        $phone = $_POST['phone'];
+         $username = $_POST['username'];
+        $current_date = date("Y-m-d");
+    
+
+    
+ $query = "INSERT INTO posts ( post_title, post_content, post_image, post_price, post_phone, user_name, post_date) ";
+$query .= "VALUES ( '{$title}', '{$content}', '{$image}', '{$price}', '{$phone}', '{$username}', '{$current_date}' ) ";
+        
+   $userPost = mysqli_query($connected, $query);
+    if(!$userPost){
+        die ("QUERY FAILED" . mysqli_error($connected));
+}
+
+}
+        
+        }     }
+    }
+
+?> 
+ 
+ 
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2">
+     
+    </div>
+    <div class="col-sm-8">
+     
+     
+    <form   method="post" action="#" enctype="multipart/form-data" >
+      
+         
+         
+       
+          <div class="form-group">
+            <h4><span class="label label-primary"></span> Your username: </h4>
+        
+        <input type="username" class="form-control" name="username" value=" <?php   if ( $_SESSION['usermo']){
+    
+    $username = $_SESSION['usermo'];  echo $username; } ?>">
+        </div>
+         
+      
+         
+         
+       
+ 
+      
+      
+      
+      
+      
+       
+       <div class="form-group">
+        <h4><span class="label label-primary">Title</span></h4>
+        <input type="title" class="form-control" name="title" placeholder="Title of your item" required>
+        </div>
+       
+       
+       
+       
+       
+       
+       
+       
+       
+        <div class="form-group">
+        <h4><span class="label label-primary">Image</span></h4>
+        <input type="file" id="image" class="file-loading" webkitdirectory multiple name="image[]" >
+        <script>
+$(document).on('ready', function() {
+    $("#input-folder-1").fileinput({
+        browseLabel: 'Select Folder...'
+    });
+});
+</script>
+            
+        
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div class="form-group">
+        <h4><span class="label label-primary">Content Discription</span></h4>
+<!--     CONTENT BEEN REPLACE   <input type="content" class="form-control" name="content" placeholder="content" >-->
+          <textarea  type="text" class="form-control" rows="5" name="content" placeholder="Content"></textarea>
+        </div>
+
+        
+        
+        
+        
+        
+        <div class="form-group">
+            <h4><span class="label label-primary">Price</span></h4>
+        
+        <input type="price" class="form-control" name="price" placeholder="Input your Price">
+        </div>
+        <div class="form-group">
+        <h4><span class="label label-primary">Phone Number</span></h4>
+        <input type="phone" class="form-control" name="phone" placeholder="+63 123 456 7890" >
+        </div>
+       
+       
+
+  
+       
+           
+            
+            <div class="form-group">
+        <button type="submit" name="submit" class="btn btn-primary btn-block">Submit Post</button>
+        </div>
+    </form> 
+    </div>
+    <div class="col-sm-2">
+     
+    </div>
+  </div>
+</div>

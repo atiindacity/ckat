@@ -1,0 +1,16 @@
+<?php include "includes/header.php" ;?>
+
+<body>
+
+<!-- Navigation -->
+
+<?php include "includes/nav.php" ;?>
+
+<!-- Page Content -->
+
+<?php include "includes/signup.php" ;?>        
+
+
+<hr>
+<!-- Footer -->
+<?php include "includes/footer.php" ;?>       
